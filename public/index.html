@@ -2,16 +2,27 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Фото в 1С</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Загрузка фото в 1С</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h2>Сделать фото и отправить в 1С</h2>
-  <input type="file" accept="image/*" capture="environment" id="cameraInput">
-  <br/><br/>
-  <img id="preview" src="#" alt="Превью" style="max-width: 300px; display:none;">
-  <br/><br/>
-  <button id="sendBtn" disabled>Отправить фото</button>
+  <div class="container">
+    <h1>📸 Загрузка фото</h1>
+
+    <label class="file-label">
+      <input type="file" accept="image/*" capture="environment" id="cameraInput" />
+      <span>Выбрать или сделать фото</span>
+    </label>
+
+    <div id="filename" class="filename">Файл не выбран</div>
+    <img id="preview" src="#" alt="Превью" class="preview" />
+
+    <button id="sendBtn" disabled>Отправить в 1С</button>
+
+    <div id="status" class="status"></div>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
