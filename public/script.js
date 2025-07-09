@@ -25,29 +25,37 @@ scanBtn.addEventListener('click', () => {
       html5QrCode.stop().then(() => {
         qrReader.style.display = 'none';
 
-        const pinfl = decodedText.trim();
+        const raw = decodedText.trim();
 
-        if (/^[3-4]\d{13}$/.test(pinfl)) {
-          pinflInput.value = pinfl;
+        // Ищем 14 цифр перед знаком "<"
+          const pinflMatch = raw.match(/(\d{14})</);
+          if (pinflMatch) {
+            const pinfl = pinflMatch[1]; // пример: 31805958660010
+            pinflInput.value = pinfl;
 
-          const day = pinfl.substring(1, 3);
-          const month = pinfl.substring(3, 5);
-          const yearSuffix = pinfl.substring(5, 7);
-          const fullYear = parseInt(yearSuffix, 10) > 30 ? '19' + yearSuffix : '20' + yearSuffix;
-          const birthdate = `${day}.${month}.${fullYear}`;
-          birthdateInput.value = birthdate;
+            // ПИНФЛ: 1-я цифра = пол (не используем)
+            //        2–7 = дата рождения (ДДММГГ)
+            const day = pinfl.substring(1, 3);
+            const month = pinfl.substring(3, 5);
+            const yearSuffix = pinfl.substring(5, 7);
+            const fullYear = parseInt(yearSuffix, 10) > 30 ? '19' + yearSuffix : '20' + yearSuffix;
+            const birthdate = `${day}.${month}.${fullYear}`;
+            birthdateInput.value = birthdate;
 
-          status.textContent = '✅ ПИНФЛ и дата рождения считаны';
-        } else {
-          status.textContent = '❌ Неверный ПИНФЛ';
-        }
-      });
-    },
-    errorMessage => {
-      // можно игнорировать
-    }
-  ).catch(err => {
-    status.textContent = 'Ошибка запуска камеры: ' + err;
+            status.textContent = '✅ ПИНФЛ и дата рождения считаны';
+          } else {
+            status.textContent = '❌ Не удалось извлечь ПИНФЛ из QR-кода';
+          }
+        });
+      },
+      errorMessage => {
+        // можно игнорировать или логировать
+      }
+    ).catch(err => {
+      status.textContent = 'Ошибка запуска камеры: ' + err;
+    });
+  }).catch(err => {
+    status.textContent = 'Не удалось получить список камер';
   });
 });
 
