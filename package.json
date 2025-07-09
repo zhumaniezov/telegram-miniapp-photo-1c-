@@ -1,9 +1,9 @@
 {
   "name": "telegram-miniapp-photo-1c",
   "version": "1.0.0",
-  "main": "server/app.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node server/app.js"
+    "start": "node app.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
