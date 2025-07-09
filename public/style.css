@@ -11,10 +11,10 @@ body {
   text-align: center;
 }
 
-h1 {
-  font-size: 24px;
-  margin-bottom: 20px;
-  color: #333;
+h1, h2 {
+  font-size: 22px;
+  color: #222;
+  margin-top: 25px;
 }
 
 .file-label {
@@ -55,6 +55,7 @@ button {
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
+  margin: 10px 0;
 }
 
 button:disabled {
@@ -66,4 +67,25 @@ button:disabled {
   margin-top: 15px;
   font-size: 14px;
   color: #2f80ed;
+}
+
+.form-group {
+  text-align: left;
+  margin: 10px 0;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 4px;
+  color: #444;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fdfdfd;
 }
