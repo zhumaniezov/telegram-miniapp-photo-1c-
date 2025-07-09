@@ -17,42 +17,44 @@ scanBtn.addEventListener('click', () => {
   const html5QrCode = new Html5Qrcode("qr-reader");
 
   Html5Qrcode.getCameras().then(devices => {
-    if (devices && devices.length) {
-      const cameraId = devices[0].id;
-      html5QrCode.start(
-        cameraId,
-        { fps: 10, qrbox: 250 },
-        (decodedText, decodedResult) => {
-          html5QrCode.stop().then(() => {
-            qrReader.style.display = 'none';
-            const pinfl = decodedText.trim();
+  if (devices && devices.length) {
+    // Выбираем заднюю камеру, если есть
+    const backCamera = devices.find(d => d.label.toLowerCase().includes('back')) || devices[0];
+    const cameraId = backCamera.id;
 
-            if (/^[3-4]\d{13}$/.test(pinfl)) {
-              pinflInput.value = pinfl;
+    html5QrCode.start(
+      cameraId,
+      { fps: 10, qrbox: 250 },
+      (decodedText, decodedResult) => {
+        html5QrCode.stop().then(() => {
+          qrReader.style.display = 'none';
+          const pinfl = decodedText.trim();
+          
+          if (/^[3-4]\d{13}$/.test(pinfl)) {
+            pinflInput.value = pinfl;
 
-              const day = pinfl.substring(1, 3);
-              const month = pinfl.substring(3, 5);
-              const yearSuffix = pinfl.substring(5, 7);
-              const fullYear = parseInt(yearSuffix, 10) > 30 ? '19' + yearSuffix : '20' + yearSuffix;
-              const birthdate = `${day}.${month}.${fullYear}`;
-              birthdateInput.value = birthdate;
+            const day = pinfl.substring(1, 3);
+            const month = pinfl.substring(3, 5);
+            const yearSuffix = pinfl.substring(5, 7);
+            const fullYear = parseInt(yearSuffix, 10) > 30 ? '19' + yearSuffix : '20' + yearSuffix;
+            const birthdate = `${day}.${month}.${fullYear}`;
+            birthdateInput.value = birthdate;
 
-              status.textContent = '✅ ПИНФЛ и дата рождения считаны';
-            } else {
-              status.textContent = '❌ Неверный ПИНФЛ';
-            }
-          });
-        },
-        errorMessage => {
-          // не выводим
-        }
-      ).catch(err => {
-        status.textContent = 'Ошибка запуска камеры: ' + err;
-      });
-    }
-  }).catch(err => {
-    status.textContent = 'Не удалось получить доступ к камере';
-  });
+            status.textContent = '✅ ПИНФЛ и дата рождения считаны';
+          } else {
+            status.textContent = '❌ Неверный ПИНФЛ';
+          }
+        });
+      },
+      errorMessage => {
+        // можно игнорировать
+      }
+    ).catch(err => {
+      status.textContent = 'Ошибка запуска камеры: ' + err;
+    });
+  }
+}).catch(err => {
+  status.textContent = 'Не удалось получить доступ к камере';
 });
 
 // Фото и отправка
